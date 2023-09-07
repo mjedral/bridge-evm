@@ -52,7 +52,7 @@ subtask(
 );
 
 function getAdminSk(): string {
-  const sk = process.env["TEST_ADMIN_SK"];
+  const sk = process.env["PLCOIN_ADMIN_SK"];
   // default hard hat node admin address
   return (
     sk ?? "0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e"
