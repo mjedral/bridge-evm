@@ -10,9 +10,13 @@ contract TargetToken is ERC20Upgradeable, PausableUpgradeable, OwnableUpgradeabl
     mapping(address => Lock[]) private locks;
     mapping(address => bool) private _isBlocked;
 
-    function initialize() initializer public {
+    address public owner;
+
+    function initialize(address initialOwner) initializer public {
         __ERC20_init("TargetToken", "TRGT");
         __Pausable_init();
+        __Ownable_init();
+        owner = initialOwner;
     }
 
     event Mint(address indexed to, uint256 amount);

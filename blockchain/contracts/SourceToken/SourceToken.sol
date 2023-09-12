@@ -4,16 +4,18 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-contract SourceToken is ERC20Upgradeable, PausableUpgradeable, OwnableUpgradeable {
+contract SourceToken is ERC20Upgradeable, PausableUpgradeable {
     mapping(address => Lock[]) private locks;
     mapping(address => bool) private _isBlocked;
 
-    function initialize() initializer public {
+    address public owner;
+
+    function initialize(address initialOwner) initializer public {
         __ERC20_init("SourceToken", "SRCT");
         __Ownable_init();
         __Pausable_init();
+        owner = initialOwner;
     }
 
     event Mint(address indexed to, uint256 amount);

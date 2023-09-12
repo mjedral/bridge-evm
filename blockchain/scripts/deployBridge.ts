@@ -1,10 +1,6 @@
 import { ethers } from "hardhat";
 import "dotenv/config";
-const {
-  TOKEN_BESU,
-  TOKEN_GOERLI,
-  HARDHAT_ADDRESS
-} = process.env;
+const { TOKEN_BESU, HARDHAT_ADDRESS } = process.env;
 
 async function main() {
   const [deployer] = await ethers.getSigners();
@@ -14,10 +10,7 @@ async function main() {
 
   const contract = await ethers.getContractFactory("Bridge");
 
-  const bridge = await contract.deploy(
-    HARDHAT_ADDRESS!,
-    TOKEN_BESU!
-  );
+  const bridge = await contract.deploy(HARDHAT_ADDRESS!, TOKEN_BESU!);
 
   console.log("Token address:", await bridge.getAddress());
 }
