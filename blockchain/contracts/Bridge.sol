@@ -29,7 +29,7 @@ contract Bridge {
 
         token.approve(_to, _amount);
 
-        token.transferFrom(address(this), _to, _amount); 
+        token.transferFrom(address(this), _to, _amount);
 
         emit SendTokens(_to, _amount);
     }

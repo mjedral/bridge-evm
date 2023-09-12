@@ -84,11 +84,11 @@ const config: HardhatUserConfig = {
       accounts: [ALCHEMY_GOERLI_PRIVATE_KEY!],
     },
     besu: getBesuDevNetwork(),
-    hardhat: {
-      forking: {
-        url: PROVIDER_BESU!,
-      },
-    },
+    // hardhat: {
+    //   forking: {
+    //     url: PROVIDER_BESU!,
+    //   },
+    // },
   },
 };
 

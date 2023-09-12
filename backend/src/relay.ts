@@ -1,10 +1,21 @@
+import { getAbiFromJsonFile } from "./helpers/helpers";
+
 const ethers = require("ethers");
 require("dotenv").config();
+
+const CONTRACT_PATHS = {
+ BesuBridge: '../../json/bridge.json',
+ GoerliBridge: '../../json/bridge.json',
+ TargetToken: '../../json/targetToken.json',
+ SourceToken: '../../json/sourceToken.json'
+}
 
 // CONNECT TO BLOCKCHAIN
 const goerli_provider = process.env.PROVIDER_GOERLI;
 const besu_provider = process.env.PROVIDER_BESU;
 const key = process.env.PRIVATE_KEY;
+
+console.log(besu_provider)
 
 // BRIDGE SMART CONTRACTS
 const besuAddress = process.env.BESU_SC;
@@ -13,13 +24,6 @@ const goerliAddress = process.env.GOERLI_SC;
 // TOKEN ADDRESSES
 const tokenBesu = process.env.TOKEN_BESU;
 const tokenGoerli = process.env.TOKEN_GOERLI;
-
-// ABI
-const besuAbi = require("../json/bridge.json");
-const goerliAbi = require("../json/bridge.json");
-
-const targetTokenAbi = require("../json/targetToken.json");
-const sourceTokenAbi = require("../json/sourceToken.json");
 
 // THE MAIN FUNCTION
 const main = async () => {
@@ -36,26 +40,26 @@ const main = async () => {
 
   // CONNECT TO THE BRIDGE SMART CONTRACT ON EACH NETWORK
   console.log("Connecting to Besu bridge...");
-  let besuBridge = new ethers.Contract(besuAddress, besuAbi, besuWallet);
+  let besuBridge = new ethers.Contract(besuAddress, getAbiFromJsonFile(CONTRACT_PATHS.BesuBridge), besuWallet);
   console.log("Connected! \n");
 
   console.log("Connecting to Goerli bridge...");
   let goerliBridge = new ethers.Contract(
     goerliAddress,
-    goerliAbi,
+    getAbiFromJsonFile(CONTRACT_PATHS.GoerliBridge),
     goerliWallet
   );
   console.log("Connected! \n");
 
   // CONNECT TO THE TOKEN SMART CONTRACT ON EACH NETWORK
   console.log("Connecting to Besu erc-20 token...");
-  let besuToken = new ethers.Contract(tokenBesu, sourceTokenAbi, besuWallet);
+  let besuToken = new ethers.Contract(tokenBesu, getAbiFromJsonFile(CONTRACT_PATHS.SourceToken), besuWallet);
   console.log("Connected! \n");
 
   console.log("Connecting to Goerli erc-20 token...");
   let goerliToken = new ethers.Contract(
     tokenGoerli,
-    targetTokenAbi,
+    getAbiFromJsonFile(CONTRACT_PATHS.TargetToken),
     goerliWallet
   );
   console.log("Connected! \n");

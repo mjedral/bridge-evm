@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,28 +35,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
+Object.defineProperty(exports, "__esModule", { value: true });
+var helpers_1 = require("./helpers/helpers");
 var ethers = require("ethers");
 require("dotenv").config();
+var CONTRACT_PATHS = {
+    BesuBridge: '../../json/bridge.json',
+    GoerliBridge: '../../json/bridge.json',
+    TargetToken: '../../json/targetToken.json',
+    SourceToken: '../../json/sourceToken.json'
+};
 // CONNECT TO BLOCKCHAIN
 var goerli_provider = process.env.PROVIDER_GOERLI;
 var besu_provider = process.env.PROVIDER_BESU;
 var key = process.env.PRIVATE_KEY;
+console.log(besu_provider);
 // BRIDGE SMART CONTRACTS
 var besuAddress = process.env.BESU_SC;
 var goerliAddress = process.env.GOERLI_SC;
 // TOKEN ADDRESSES
 var tokenBesu = process.env.TOKEN_BESU;
 var tokenGoerli = process.env.TOKEN_GOERLI;
-// ABI
-var besuAbi = require("../json/bridge.json");
-var goerliAbi = require("../json/bridge.json");
-var targetTokenAbi = require("../json/targetToken.json");
-var sourceTokenAbi = require("../json/sourceToken.json");
 // THE MAIN FUNCTION
-var main = function () { return __awaiter(_this, void 0, void 0, function () {
+var main = function () { return __awaiter(void 0, void 0, void 0, function () {
     var besuProvider, besuWallet, goerliProvider, goerliWallet, besuBridge, goerliBridge, besuToken, goerliToken, sendTokensFromBesu, sendTokensFromGoerli;
-    var _this = this;
     return __generator(this, function (_a) {
         // CONNECT TO Besu admin
         console.log("Connecting to Besu...");
@@ -68,19 +71,19 @@ var main = function () { return __awaiter(_this, void 0, void 0, function () {
         console.log("Connected! \n");
         // CONNECT TO THE BRIDGE SMART CONTRACT ON EACH NETWORK
         console.log("Connecting to Besu bridge...");
-        besuBridge = new ethers.Contract(besuAddress, besuAbi, besuWallet);
+        besuBridge = new ethers.Contract(besuAddress, (0, helpers_1.getAbiFromJsonFile)(CONTRACT_PATHS.BesuBridge), besuWallet);
         console.log("Connected! \n");
         console.log("Connecting to Goerli bridge...");
-        goerliBridge = new ethers.Contract(goerliAddress, goerliAbi, goerliWallet);
+        goerliBridge = new ethers.Contract(goerliAddress, (0, helpers_1.getAbiFromJsonFile)(CONTRACT_PATHS.GoerliBridge), goerliWallet);
         console.log("Connected! \n");
         // CONNECT TO THE TOKEN SMART CONTRACT ON EACH NETWORK
         console.log("Connecting to Besu erc-20 token...");
-        besuToken = new ethers.Contract(tokenBesu, sourceTokenAbi, besuWallet);
+        besuToken = new ethers.Contract(tokenBesu, (0, helpers_1.getAbiFromJsonFile)(CONTRACT_PATHS.SourceToken), besuWallet);
         console.log("Connected! \n");
         console.log("Connecting to Goerli erc-20 token...");
-        goerliToken = new ethers.Contract(tokenGoerli, targetTokenAbi, goerliWallet);
+        goerliToken = new ethers.Contract(tokenGoerli, (0, helpers_1.getAbiFromJsonFile)(CONTRACT_PATHS.TargetToken), goerliWallet);
         console.log("Connected! \n");
-        sendTokensFromBesu = function (address, amount) { return __awaiter(_this, void 0, void 0, function () {
+        sendTokensFromBesu = function (address, amount) { return __awaiter(void 0, void 0, void 0, function () {
             var gasLimit, tx, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -111,7 +114,7 @@ var main = function () { return __awaiter(_this, void 0, void 0, function () {
                 }
             });
         }); };
-        sendTokensFromGoerli = function (address, amount) { return __awaiter(_this, void 0, void 0, function () {
+        sendTokensFromGoerli = function (address, amount) { return __awaiter(void 0, void 0, void 0, function () {
             var gasLimit, tx, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
