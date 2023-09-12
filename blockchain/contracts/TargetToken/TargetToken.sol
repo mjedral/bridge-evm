@@ -4,20 +4,24 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-contract TargetToken is ERC20Upgradeable, PausableUpgradeable, OwnableUpgradeable {
+contract TargetToken is ERC20Upgradeable, PausableUpgradeable {
     mapping(address => Lock[]) private locks;
     mapping(address => bool) private _isBlocked;
 
     address public owner;
 
-    function initialize(address initialOwner) initializer public {
+    function initialize(address initialOwner) public {
         __ERC20_init("TargetToken", "TRGT");
         __Pausable_init();
-        __Ownable_init();
         owner = initialOwner;
     }
+
+     modifier onlyOwner() {
+        require(msg.sender == owner, "You are not the owner");
+        _;
+    }
+
 
     event Mint(address indexed to, uint256 amount);
     event Burn(address indexed to, uint256 amount);

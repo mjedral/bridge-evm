@@ -11,11 +11,15 @@ contract SourceToken is ERC20Upgradeable, PausableUpgradeable {
 
     address public owner;
 
-    function initialize(address initialOwner) initializer public {
+    function initialize(address initialOwner) public {
         __ERC20_init("SourceToken", "SRCT");
-        __Ownable_init();
         __Pausable_init();
         owner = initialOwner;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "You are not the owner");
+        _;
     }
 
     event Mint(address indexed to, uint256 amount);
